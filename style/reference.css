@@ -75,6 +75,7 @@ h3{
   margin: 22px auto;
   font-family: 'poppins';
   text-transform: capitalize;
+  cursor: pointer;
   & span i{
     margin-right: 6px;
   }
