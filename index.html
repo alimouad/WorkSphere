@@ -17,32 +17,43 @@
                 <div class="workers"></div>
                 <button class="btn" id="addWorker"><span><i class="fa-solid fa-plus"></i></span>Add new Worker</button>
             </aside>
-            <main class="floorPlan ">
+            <main class="floorPlan">
                 <img src="./images/workspace.jpg" alt="map">
                 <div class="grid">
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem" data-role="conference">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem" data-role="it">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem" data-role="security">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem" data-role="reception">
+                        <div class="items"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
-                    <div class="flex">
-                        <span><i class="fa-solid fa-plus"></i>Add </span>
+                    <div class="boxItem" data-role="archive">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
                     </div>
 
                 </div>
                 
             </main>        
-        </div>    
+        </div>   
+        <div class="added_workers">
+            <h3>Available Workers </h3>
+            <div class="flex">
+            </div>
+        </div> 
          <div class="form-container">   
                 <div class="formDiv">
                     <h4>Profil</h4>
@@ -56,11 +67,12 @@
                     <div class="form-group">
                         <label for="role">Position</label>
                         <select name="role" id="role" required>
-                            <option value="it" selected>IT</option>
-                            <option value="recep">Reception</option>
+                            <option value="it" selected>It Technician</option>
+                            <option value="receptionist">Receptionist</option>
                             <option value="security">Security Agent</option>
                             <option value="cleaner">Cleaner</option>
                             <option value="manager">Manager</option>
+                            <option value="other">Other Position</option>
                         </select>
                         
                     </div>
