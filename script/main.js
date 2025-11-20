@@ -4,12 +4,21 @@ const email = document.getElementById('email');
 const phone = document.getElementById('phone');
 const image = document.getElementById('image');
 const addWorker = document.querySelector('#addWorker')
-const workers = JSON.parse(localStorage.getItem('workers')) || [];
+let workers = JSON.parse(localStorage.getItem('workers')) || [];
+let id = workers.length > 0 ? workers[workers.length - 1].id + 1 : 1;
+
+
+let tempWorkers = [...workers];       // used in selection popup
+let tempMainWorkers = [...workers];   // used in main workers list
+
+
+
 
 
 addWorker.addEventListener("click", () => {
     let container = document.querySelector('.form-container');
     container.classList.add('show');
+    addingWorking.classList.remove('show')
 });
 
 // Close form only when clicking outside the formDiv
@@ -24,37 +33,37 @@ document.addEventListener('click', (e) => {
 });
 
 
-
 form.addEventListener('submit', e => {
     e.preventDefault();
-    validateInputs();
-    validateExperiences();
+
+    if (!validateInputs() || !validateExperiences()) {
+        return;
+    }
 
     const workerProfile = {
-       
-        name: document.getElementById('name').value,
-        role: document.getElementById('role').value,
-        image: document.getElementById('image').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        experiences: [] 
+        id: id++,  // make sure id is initialized correctly
+        name: document.getElementById('name').value.trim(),
+        role: document.getElementById('role').value.trim(),
+        image: document.getElementById('image').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        experiences: []
     };
 
     const experienceSections = document.querySelectorAll('.experience-section');
-    
-    experienceSections.forEach(section => {
 
-        const titleInput = section.querySelector('[id^="title-"]');
+    experienceSections.forEach(section => {
+        const titleInput   = section.querySelector('[id^="title-"]');
         const companyInput = section.querySelector('[id^="company-"]');
-        const startInput = section.querySelector('[id^="start-"]');
-        const endInput = section.querySelector('[id^="end-"]');
+        const startInput   = section.querySelector('[id^="start-"]');
+        const endInput     = section.querySelector('[id^="end-"]');
 
         if (titleInput && titleInput.value.trim() !== '') {
             workerProfile.experiences.push({
-                title: titleInput.value,
-                company: companyInput ? companyInput.value : '',
-                startDate: startInput ? startInput.value : '',
-                endDate: endInput ? endInput.value : ''
+                title: titleInput.value.trim(),
+                company: companyInput ? companyInput.value.trim() : "",
+                startDate: startInput ? startInput.value : "",
+                endDate: endInput ? endInput.value : ""
             });
         }
     });
@@ -62,19 +71,47 @@ form.addEventListener('submit', e => {
     workers.push(workerProfile);
 
     try {
-        localStorage.setItem('workers', JSON.stringify(workers)); 
+        localStorage.setItem('workers', JSON.stringify(workers));
         alert('Worker profile saved successfully');
-        resetForm() 
-        document.getElementById('experiences-list').innerHTML = `
-            <h3>Professional Experiences</h3>   `
-        expCount = 1; 
+        document.querySelector('.workers').innerHTML = "";
+        loadWorkers();
 
-    } catch (e) {
-        console.error("Error saving to Local Storage:", e);
+        resetForm();
+
+        document.getElementById('experiences-list').innerHTML = `
+            <h3>Professional Experiences</h3>
+        `;
+        expCount = 1;
+
+    } catch (err) {
+        console.error("Error saving to Local Storage:", err);
         alert("Failed to save data. Local Storage might be full or inaccessible.");
     }
 });
 
+function loadWorkers() {
+    const container = document.querySelector('.workers');
+    container.innerHTML = ""; // clear first!
+
+    tempMainWorkers.forEach(worker => {
+        const div = document.createElement('div');
+        div.className = 'profile-item flex';
+
+        div.innerHTML = `
+            <div class="profile-avatar">
+                <img src="./images/user.jpg" alt="User">
+            </div>
+            <div>
+                <p class="profile-name">Name: <span>${worker.name}</span></p>
+                <p class="profile-name">Role: <span>${worker.role}</span></p>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+loadWorkers()
 
 
 const setError = (element, message) => {
@@ -113,6 +150,7 @@ const isValidPhone = phone => {
 
 // ---- Validation Logic ----
 const validateInputs = () => {
+    let isValid = true;
     const usernameValue = username.value.trim();
     const emailValue = email.value.trim();
     const phoneValue = phone.value.trim();
@@ -121,21 +159,27 @@ const validateInputs = () => {
     // username
     if (usernameValue === '') {
         setError(username, 'Name is required');
+        isValid = false;
     } 
-    // email
+
     if (emailValue === '') {
         setError(email, 'Email is required');
+        isValid = false;
     } else if (!isValidEmail(emailValue)) {
         setError(email, 'Provide a valid email');
+        isValid = false;
     } 
 
     if (imageValue == '' && !isValidURL(imageValue)) {
         setError(image, 'Enter a valid URL');
+        isValid = false;
     } 
 
     if (phoneValue == '' && !isValidPhone(phoneValue)) {
         setError(phone, 'Enter a valid phone number');
+        isValid = false;
     } 
+    return isValid
 };
 
 
@@ -252,8 +296,6 @@ function removeExperience(id) {
     }
 }
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const initialSections = document.querySelectorAll('.experience-section');
     if (initialSections.length > 0) {
@@ -261,3 +303,125 @@ document.addEventListener('DOMContentLoaded', () => {
         expCount = parseInt(initialSections[initialSections.length - 1].getAttribute('data-exp-id')) || 1;
     }
 });
+
+
+
+
+
+
+
+
+
+let selectedRole = null;
+let selectedItemsDiv = null;
+
+// popup available workers---------
+let addingWorking = document.querySelector('.added_workers');
+let divBox = document.querySelector('.added_workers .flex')
+
+// show available workers in popup---------
+function loadWorkersList(list) {
+    divBox.innerHTML = "";
+
+    list.forEach(worker => {
+        const div = document.createElement('div');
+        div.className = 'profile-item flex';
+
+        div.innerHTML = `
+            <div class="profile-avatar">
+                <img src="./images/user.jpg" alt="User">
+            </div>
+            <div>
+                <p class="profile-name"><span>${worker.name}</span></p>
+            </div>
+            <span class="add worker-add"><i class="fa-solid fa-plus"></i>Add</span>
+        `;
+        divBox.appendChild(div);
+
+        div.querySelector('.worker-add').addEventListener('click', () => {
+            addWorkerToItems(worker);
+            removeFromTemp(worker); // removes from popup + from main UI
+            filterAndLoad(selectedRole);
+        });
+    });
+}
+
+
+
+function removeFromTemp(worker) {
+    // remove from filter list
+    // return the only items that not equal id to worker id ------
+    tempWorkers = tempWorkers.filter(w => w.id !== worker.id);
+
+    tempMainWorkers = tempMainWorkers.filter(w => w.id !== worker.id);
+    // update main display immediately
+    loadWorkers();
+}
+
+
+
+// add worker button--------
+let addbtn = document.querySelectorAll('.floorPlan .add');
+addbtn.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        addingWorking.classList.toggle('show')
+        const container = e.target.closest('.boxItem');
+        selectedRole = container.dataset.role;
+        selectedItemsDiv = container.querySelector('.items');
+        filterAndLoad(selectedRole);
+    });
+});
+
+function filterAndLoad(role) {
+    let result = [];
+
+    switch (role) {
+        case "it":
+            result = tempWorkers.filter(w => w.role === "it");
+            break;
+
+        case "security":
+            result = tempWorkers.filter(w => w.role === "security");
+            break;
+
+        case "receptionist":
+            result = tempWorkers.filter(w => w.role === "receptionist");
+            break;
+
+        default:
+            result = [];
+    }
+
+    loadWorkersList(result);
+}
+
+
+function addWorkerToItems(worker) {
+    if (!selectedItemsDiv) return;
+
+    const item = document.createElement('div');
+    item.className = "added-worker profile-item flex";
+    item.innerHTML = `
+        <div class="profile-avatar">
+            <img src="./images/user.jpg" alt="User">
+        </div>
+        <span class="remove"><i class="fa-solid fa-delete-left"></i></span>
+    `;
+
+    selectedItemsDiv.appendChild(item);
+    item.querySelector('.remove').addEventListener('click', () => {
+        // check the workers if its exits-------
+        if (!tempWorkers.some(w => w.id === worker.id)) {
+            tempWorkers.push(worker);
+        }
+        if (!tempMainWorkers.some(w => w.id === worker.id)) {
+            tempMainWorkers.push(worker);
+        }
+        loadWorkers();        
+        filterAndLoad(selectedRole); 
+        item.remove();      
+    });
+}
+
+
+
