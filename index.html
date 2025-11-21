@@ -17,21 +17,109 @@
                 <div class="workers"></div>
                 <button class="btn" id="addWorker"><span><i class="fa-solid fa-plus"></i></span>Add new Worker</button>
             </aside>
-            <main class="floorPlan ">
+            <main class="floorPlan">
                 <img src="./images/workspace.jpg" alt="map">
                 <div class="grid">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div class="boxItem" data-role="conference" data-max="6">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
+                    <div class="boxItem" data-role="it" data-max="2">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
+                    <div class="boxItem" data-role="security" data-max="2">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
+                    <div class="boxItem" data-role="reception" data-max="4">
+                        <div class="items"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
+                    <div class="boxItem" data-role="stuff" data-max="3">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
+                    <div class="boxItem" data-role="archive" data-max="1">
+                        <div class="items flex"></div>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
+                    </div>
 
                 </div>
                 
-            </main>
-            
-        </div>    
+            </main>        
+        </div>   
+        
+        <div class="added_workers">
+            <h3>Available Workers </h3>
+            <div class="flex">
+            </div>
+        </div> 
+        <div class="form-container">   
+                <div class="formDiv">
+                    <h4>Profil</h4>
+                    <form action="#" method="post" class="form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" >
+                        <div class="error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Position</label>
+                        <select name="role" id="role" required>
+                            <option value="it" selected>It Technician</option>
+                            <option value="receptionist">Receptionist</option>
+                            <option value="security">Security Agent</option>
+                            <option value="cleaner">Cleaner</option>
+                            <option value="manager">Manager</option>
+                            <option value="other">Other Position</option>
+                        </select>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <img id="image-input" src="./images/user.jpg" alt="userImage" >
+                        <label for="image">Image(URL)</label>
+                        <input  class="image_input" type="text" id="image" name="image" placeholder="https://exemple.com/image.jpg">
+                        <div class="error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" >
+                        <div class="error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Ex: +212 6 23 45 67 89">
+                        <div class="error"></div>
+                    </div>
+                    <hr style="margin: 30px 0; border-color: var(--border-color);">
+
+                    <div id="experiences-list">
+                        <h3>Professional Experiences</h3>
+                    </div>
+
+
+                    <button type="button" class="btn-primary btn" onclick="addExperience()">
+                        Add Experience
+                    </button>
+
+                    <button type="submit" class="btn-primary btn" style="float: right;">
+                        Add worker
+                    </button>
+
+                </form>
+                </div>
+               
+        </div>
+        <div class="modal">
+            <h3>Profile Description</h3>
+        </div>
     </div>
+
+    <script src="./script/main.js"></script>
 </body>
 </html>
