@@ -20,41 +20,42 @@
             <main class="floorPlan">
                 <img src="./images/workspace.jpg" alt="map">
                 <div class="grid">
-                    <div class="boxItem" data-role="conference">
+                    <div class="boxItem" data-role="conference" data-max="6">
                         <div class="items flex"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
-                    <div class="boxItem" data-role="it">
+                    <div class="boxItem" data-role="it" data-max="2">
                         <div class="items flex"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
-                    <div class="boxItem" data-role="security">
+                    <div class="boxItem" data-role="security" data-max="2">
                         <div class="items flex"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
-                    <div class="boxItem" data-role="reception">
+                    <div class="boxItem" data-role="reception" data-max="4">
                         <div class="items"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
-                    <div class="boxItem">
+                    <div class="boxItem" data-role="stuff" data-max="3">
                         <div class="items flex"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
-                    <div class="boxItem" data-role="archive">
+                    <div class="boxItem" data-role="archive" data-max="1">
                         <div class="items flex"></div>
-                        <span class="add"><i class="fa-solid fa-plus"></i>Add </span>
+                        <span class="add"><i class="fa-solid fa-plus"></i> </span>
                     </div>
 
                 </div>
                 
             </main>        
         </div>   
+        
         <div class="added_workers">
             <h3>Available Workers </h3>
             <div class="flex">
             </div>
         </div> 
-         <div class="form-container">   
+        <div class="form-container">   
                 <div class="formDiv">
                     <h4>Profil</h4>
                     <form action="#" method="post" class="form">
@@ -78,8 +79,9 @@
                     </div>
 
                     <div class="form-group">
+                        <img id="image-input" src="./images/user.jpg" alt="userImage" >
                         <label for="image">Image(URL)</label>
-                        <input type="url" id="image" name="image" placeholder="https://exemple.com/image.jpg">
+                        <input  class="image_input" type="text" id="image" name="image" placeholder="https://exemple.com/image.jpg">
                         <div class="error"></div>
                     </div>
 
@@ -112,7 +114,10 @@
                 </form>
                 </div>
                
-            </div>
+        </div>
+        <div class="modal">
+            <h3>Profile Description</h3>
+        </div>
     </div>
 
     <script src="./script/main.js"></script>

@@ -6,6 +6,9 @@ const image = document.getElementById('image');
 const addWorker = document.querySelector('#addWorker')
 let workers = JSON.parse(localStorage.getItem('workers')) || [];
 let id = workers.length > 0 ? workers[workers.length - 1].id + 1 : 1;
+// popup available workers---------
+let addingWorking = document.querySelector('.added_workers');
+let divBox = document.querySelector('.added_workers .flex')
 
 
 let tempWorkers = [...workers];       // used in selection popup
@@ -21,6 +24,12 @@ addWorker.addEventListener("click", () => {
     addingWorking.classList.remove('show')
 });
 
+const image_input = document.querySelector('#image')
+image_input.addEventListener("change",()=>{
+    console.log('text')
+    const image =  document.querySelector("#image-input")
+    image.src = image_input.value 
+})
 // Close form only when clicking outside the formDiv
 document.addEventListener('click', (e) => {
     const formContainer = document.querySelector('.form-container');
@@ -30,7 +39,23 @@ document.addEventListener('click', (e) => {
     {
         formContainer.classList.remove('show');
     }
+   // ---- CLOSE MODAL WHEN CLICKING OUTSIDE ----
+    if (modal.classList.contains('show')) {
+        const clickInsideModal = e.target.closest('.modal') !== null;
+
+        if (!clickInsideModal) {
+            modal.classList.remove('show');
+        }
+    }
+    if (addingWorking.classList.contains('show')) {
+        const clickInsideModal = e.target.closest('.added_workers') !== null;
+
+        if (!clickInsideModal) {
+            addingWorking.classList.remove('show');
+        }
+    }
 });
+
 
 
 form.addEventListener('submit', e => {
@@ -75,7 +100,6 @@ form.addEventListener('submit', e => {
         alert('Worker profile saved successfully');
         document.querySelector('.workers').innerHTML = "";
         loadWorkers();
-
         resetForm();
 
         document.getElementById('experiences-list').innerHTML = `
@@ -99,7 +123,7 @@ function loadWorkers() {
 
         div.innerHTML = `
             <div class="profile-avatar">
-                <img src="./images/user.jpg" alt="User">
+                <img src=${worker.image} alt="User">
             </div>
             <div>
                 <p class="profile-name">Name: <span>${worker.name}</span></p>
@@ -110,7 +134,6 @@ function loadWorkers() {
         container.appendChild(div);
     });
 }
-
 loadWorkers()
 
 
@@ -315,9 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let selectedRole = null;
 let selectedItemsDiv = null;
 
-// popup available workers---------
-let addingWorking = document.querySelector('.added_workers');
-let divBox = document.querySelector('.added_workers .flex')
+
 
 // show available workers in popup---------
 function loadWorkersList(list) {
@@ -329,7 +350,7 @@ function loadWorkersList(list) {
 
         div.innerHTML = `
             <div class="profile-avatar">
-                <img src="./images/user.jpg" alt="User">
+                <img src=${worker.image} alt="User">
             </div>
             <div>
                 <p class="profile-name"><span>${worker.name}</span></p>
@@ -339,8 +360,9 @@ function loadWorkersList(list) {
         divBox.appendChild(div);
 
         div.querySelector('.worker-add').addEventListener('click', () => {
-            addWorkerToItems(worker);
-            removeFromTemp(worker); // removes from popup + from main UI
+        const added = addWorkerToItems(worker);
+        if (!added) return;
+            removeFromTemp(worker); 
             filterAndLoad(selectedRole);
         });
     });
@@ -349,7 +371,6 @@ function loadWorkersList(list) {
 
 
 function removeFromTemp(worker) {
-    // remove from filter list
     // return the only items that not equal id to worker id ------
     tempWorkers = tempWorkers.filter(w => w.id !== worker.id);
 
@@ -365,6 +386,7 @@ let addbtn = document.querySelectorAll('.floorPlan .add');
 addbtn.forEach(btn => {
     btn.addEventListener('click', (e) => {
         addingWorking.classList.toggle('show')
+        e.stopPropagation();
         const container = e.target.closest('.boxItem');
         selectedRole = container.dataset.role;
         selectedItemsDiv = container.querySelector('.items');
@@ -377,17 +399,24 @@ function filterAndLoad(role) {
 
     switch (role) {
         case "it":
-            result = tempWorkers.filter(w => w.role === "it");
+            result = tempWorkers.filter(w => w.role === "it" || w.role === "manager" || w.role === "cleaner");
             break;
-
         case "security":
-            result = tempWorkers.filter(w => w.role === "security");
+            result = tempWorkers.filter(w => w.role === "security" || w.role === "manager" || w.role === "cleaner");
             break;
 
-        case "receptionist":
-            result = tempWorkers.filter(w => w.role === "receptionist");
+        case "reception":
+            result = tempWorkers.filter(w => w.role === "receptionist" || w.role === "manager" || w.role === "cleaner");
             break;
-
+        case "conference":
+            result = tempWorkers.filter(w => w.role === "receptionist" || w.role === "security" || w.role === "manager" || w.role === "it" || w.role === "cleaner" || w.role ==='other');
+            break;
+        case "archive":
+            result = tempWorkers.filter(w => w.role === "manager");
+            break;
+        case "stuff":
+            result = tempWorkers.filter(w => w.role === "manager" || w.role === "receptionist" || w.role === "cleaner");
+            break;
         default:
             result = [];
     }
@@ -395,33 +424,74 @@ function filterAndLoad(role) {
     loadWorkersList(result);
 }
 
-
+// add workers to modal-----------
+let modal = document.querySelector('.modal')
 function addWorkerToItems(worker) {
     if (!selectedItemsDiv) return;
+    // get parent boxItem
+    const boxItem = selectedItemsDiv.closest(".boxItem");
+    // read max allowed
+    const max = parseInt(boxItem.dataset.max);
 
+    const currentCount = selectedItemsDiv.querySelectorAll(".added-worker").length;
+
+    // 🚫 limit reached
+    if (currentCount >= max) {
+        alert(`Maximum number reached (${max}) for this section!`);
+        return  false;;
+    }
+
+    // ---------- add worker normally ----------
     const item = document.createElement('div');
     item.className = "added-worker profile-item flex";
+
     item.innerHTML = `
-        <div class="profile-avatar">
-            <img src="./images/user.jpg" alt="User">
+        <div class="profile-avatar image">
+            <img src=${worker.image} alt="User">
         </div>
         <span class="remove"><i class="fa-solid fa-delete-left"></i></span>
     `;
 
     selectedItemsDiv.appendChild(item);
+
+    // open modal on click
+    item.querySelector('.profile-avatar').addEventListener('click', (e) => {
+        e.stopPropagation();
+        modal.classList.add('show');
+        modal.querySelectorAll('.profile-item').forEach(el => el.remove());
+
+        const profile = document.createElement('div');
+        profile.className = "profile-item flex";
+
+        profile.innerHTML = `
+            <div class="profile-avatar">
+               <img src=${worker.image} alt="User">
+            </div>
+            <div>
+                <p class="profile-name">Name: <span>${worker.name}</span></p>
+                <p class="profile-name">Position: <span>${worker.role}</span></p>
+                <p class="profile-name">Email: <span>${worker.email}</span></p>
+                <p class="profile-name">Phone Number: <span>${worker.phone}</span></p>
+            </div>
+        `;
+        modal.append(profile);
+    });
+
+    // remove button
     item.querySelector('.remove').addEventListener('click', () => {
-        // check the workers if its exits-------
         if (!tempWorkers.some(w => w.id === worker.id)) {
             tempWorkers.push(worker);
         }
         if (!tempMainWorkers.some(w => w.id === worker.id)) {
             tempMainWorkers.push(worker);
         }
-        loadWorkers();        
-        filterAndLoad(selectedRole); 
-        item.remove();      
+        loadWorkers();
+        filterAndLoad(selectedRole);
+        item.remove();
     });
+     return true; 
 }
+
 
 
 

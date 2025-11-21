@@ -178,6 +178,25 @@
     }
 }
 
+/* pop up modal ------------ */
+.modal{
+    width: 500px;
+    height: auto;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: var(--bg-color);
+    z-index: 343;
+    border-radius: 20px;
+    display: none;
+}
+.modal.show{
+    display: block;
+}
+
+
 /* items--------- */
 
 .items.flex{
@@ -206,6 +225,9 @@
     margin: 0;
     padding: 3px 5px;
     border: 2px solid #000;
+    cursor: pointer;
+}
+.items .profile-item img{
     cursor: pointer;
 }
 .items > div {
@@ -289,7 +311,7 @@ input:focus {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     margin-top: 10px;
-    background-color: #f9f9f9; /* Légèrement différent pour la clarté */
+    background-color: #f9f9f9; 
 }
 
 .experience-header {
@@ -323,18 +345,41 @@ input:focus {
 
 
 @media (max-width:668px){
-    body{
-        font-size: 0.7rem;
+    .added_workers{
+        width: 500px;
+        overflow-x: auto;
     }
+    .title{
+        text-align: justify;
+    }
+    body{
+        font-size: 0.5rem;
+    }
+.profile-item {
+    padding: 10px 20px;
+    margin-inline: auto;
+    border-bottom: 1px solid #eee;
+    max-width: 300px;
+}
     .toolBox{
+        order: 2;
         flex: 100%;
         width: 100%;
     }
     .flex{
+        align-items: center;
         flex-wrap: wrap;
+        justify-content: center;
         flex-direction: column;
+        gap: 12px !important;
     }
 .floorPlan{
-    transform: rotateZ(90deg);
+    margin: 60px auto;
+    flex: 100%;
+    max-width: 700px;
+    order: 1;
+    width: 450px;
+    /* transform: rotateZ(90deg); */
 }
 }
+
