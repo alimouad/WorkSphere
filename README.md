@@ -3,7 +3,7 @@ Interactive Staff Management Web App
 
 WorkSphere is a fully interactive web application that allows companies to visually manage their employees on a floor plan in real time.
 Users can add, edit, assign, move, and remove workers while respecting role-based zone restrictions.
-The project is built entirely with HTML, CSS (TailwindCSS), and Vanilla JavaScript.
+The project is built entirely with HTML, CSS , and Vanilla JavaScript.
 
 ## Table of Contents
 - [Project Description](#project-description)
