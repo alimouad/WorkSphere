@@ -6,6 +6,7 @@ const image = document.getElementById('image');
 const addWorker = document.querySelector('#addWorker')
 let workers = JSON.parse(localStorage.getItem('workers')) || [];
 let id = workers.length > 0 ? workers[workers.length - 1].id + 1 : 1;
+let boxItemAdd = document.querySelector(".boxItem .add")
 // popup available workers---------
 let addingWorking = document.querySelector('.added_workers');
 let divBox = document.querySelector('.added_workers .flex')
@@ -50,7 +51,7 @@ document.addEventListener('click', (e) => {
     if (addingWorking.classList.contains('show')) {
         const clickInsideModal = e.target.closest('.added_workers') !== null;
 
-        if (!clickInsideModal) {
+        if (!clickInsideModal && e.target !== boxItemAdd) {
             addingWorking.classList.remove('show');
         }
     }
@@ -435,7 +436,6 @@ function addWorkerToItems(worker) {
 
     const currentCount = selectedItemsDiv.querySelectorAll(".added-worker").length;
 
-    // 🚫 limit reached
     if (currentCount >= max) {
         alert(`Maximum number reached (${max}) for this section!`);
         return  false;;
