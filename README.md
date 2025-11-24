@@ -62,7 +62,6 @@ Built with a mobile-first approach and supports:
 - Small Desktop (1024–1279px)
 - Tablet (768–1023px)
 - Mobile (<767px)
-Includes TailwindCSS animations, transitions, and a modern clean interface.
 
 ## Business Rules
 **Zone Access per Role**
@@ -136,7 +135,7 @@ The application stores:
 
 ## Live Demo
 Experience the app here:  
-https://elgmouriabderrahim.github.io/brief6-WorkSphere/
+[https://work-sphere-kohl.vercel.app/]
 
 ## Screenshots
 **Main Interface**  
